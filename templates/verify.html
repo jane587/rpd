@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verifying...</title>
+
+  <style>
+    :root {
+      --primary: #0b69ff;
+      --primary-dark: #084ccc;
+      --text: #111827;
+      --muted: #6b7280;
+      --bg: #f9fafb;
+      --card-bg: #fff;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: var(--card-bg);
+      padding: 2.5rem 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 90%;
+      max-width: 420px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .spinner {
+      margin: 1.5rem auto;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e5e7eb;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <script>
+    async function verifyUser() {
+      const fingerprint = btoa(
+        navigator.userAgent +
+        navigator.language +
+        screen.width + screen.height
+      );
+
+      let interactions = [];
+      const record = () => interactions.push(Date.now());
+
+      document.addEventListener('mousemove', record);
+      document.addEventListener('touchstart', record);
+      document.addEventListener('keydown', record);
+
+      const startTime = Date.now();
+      await new Promise(r => setTimeout(r, 2000));
+
+      const cookie = "{{ session['verify_cookie'] }}";
+
+      const res = await fetch("/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fingerprint: fingerprint,
+          mouseMoves: interactions,
+          cookie: cookie,
+          delay: Date.now() - startTime
+        })
+      });
+
+      if (res.ok) {
+        location.reload();
+      } else {
+        document.querySelector('.container').innerHTML = `
+          <h1 style="color:#dc2626;">Verification Failed ❌</h1>
+          <p>Unable to complete user verification. Please refresh and try again.</p>
+        `;
+      }
+    }
+
+    verifyUser();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Verifying access...</h1>
+    <div class="spinner" role="status" aria-label="Loading"></div>
+    <p>Please wait a moment.  
+    We are checking that you are a real person. This process only takes a few seconds.</p>
+    <footer>© 2025 Security Portal Verification System</footer>
+  </div>
+</body>
+</html>
